@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+#but{
+	text-align: center;
+}
+body{
+text-align: center;
+width:100%;
+height:900px;
+}
+center {
+	width: 100%;
+	height:520px;
+}

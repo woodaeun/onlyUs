@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+
+	<insert parameterType="CartDTO" id="addCart">
+		insert into cart ( num,
+		userid, gCode, gName, gPrice,gSize
+		,gColor,gAmount,gImage)
+		values (
+		cart_seq.nextval,#{userid}, #{gCode},#{gName},#{gPrice},#{gSize},
+		#{gColor},#{gAmount},#{gImage})
+	</insert>
+	<!-- 수정 -->
+	<select id="cartList" resultType="CartDTO">
+		select num, userid, gCode, gName, gPrice,gSize ,gColor,gAmount,gImage
+		from cart <!-- where userid= #{userid} -->
+		order by num desc
+	</select>
+
+	<update id="updateCart" parameterType="hashmap">
+		update cart
+		set gAmount
+		=#{amount}
+		where num = #{num}
+	</update>
+
+
+	<delete id="deleteC" parameterType="int">
+		delete from cart
+		where num
+		=#{num}
+
+	</delete>
+
+	<select id="orderCart" resultType="CartDTO">
+		select num, userid, gCode,
+		gName, gPrice,gSize ,gColor,gAmount,gImage
+		from cart
+		where num = #{num}
+	</select>
+
+
+	<!-- 한꺼번에 여러 레코드 삭제 -->
+	<delete id="delAllCart" parameterType="arraylist">
+		delete from cart
+		<where>
+			<!-- where empno = 값1 or empno = 값2 -->
+			<foreach collection="list" item="xxx"><!-- xxx어레이리스트 첫번째값저장 -->
+				or num = #{xxx}
+			</foreach>
+		</where>
+	</delete>
+	<!-- 한꺼번에 여러개의 레코드 fatch -->
+	<select id="orderAllCart" parameterType="arraylist" resultType="CartDTO">
+		select num, userid, gCode, gName, gPrice,gSize ,gColor,gAmount,gImage
+		from cart
+		
+		<if test="list!=null">
+		<where>
+			num IN
+			<foreach collection="list" open="(" close=")" separator=","
+				item="xxx">
+				#{xxx}
+			</foreach>
+		</where>
+		</if>
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
